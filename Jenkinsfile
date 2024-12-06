@@ -29,5 +29,14 @@ pipeline {
         }
       }
     }
+    stage("Deploy to GKE') {
+      when {
+        branch 'main'
+      }
+      steps {
+        sh "sed -i 's/spring:latest/spring:${env.BUILD_ID}/g' deployment.yaml"
+	step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsID: env.CREDENTIALS_ID, verifyDeployments: true])
+      }
+    }
   }
 }
