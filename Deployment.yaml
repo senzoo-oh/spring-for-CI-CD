@@ -1,4 +1,4 @@
-apiVersion: spring/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: spring
@@ -20,12 +20,12 @@ spec:
 
     spec:
       containers:
-        name: spring
-        image: senzoo/spring:latest
-        imagePullPolicy: Always
-        ports:
-          containerPort: 3000
-          name: spring
+        - name: spring
+          image: senzoo/spring:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: spring
 ---
 apiVersion: v1
 kind: Service
@@ -36,8 +36,8 @@ metadata:
 
 spec:
   ports:
-    port: 80
-    targetPort: 3000
+    - port: 80
+      targetPort: 3000
   selector:
     app: spring
     tier: spring
