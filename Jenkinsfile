@@ -29,13 +29,19 @@ pipeline {
         }
       }
     }
+    stage("Update Kubernetes Manifests") {
+      steps {
+        script {
+          sh "sed -i 's/spring:latest/spring:${env.BUILD_ID}/g' webServerDeployment.yaml"
+        }
+      }
+    }
     stage("Deploy to GKE") {
       when {
         branch 'main'
       }
       steps {
-        sh "sed -i 's/spring:latest/spring:${env.BUILD_ID}/g' Deployment.yaml"
-	step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'Deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+	step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: '*.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
       }
     }
   }
