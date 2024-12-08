@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springDB
+  labels:
+    app: springDB
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springDB
+  template:
+    metadata:
+      labels:
+        app: springDB
+    spec:
+      containers:
+      - name: springDB
+        image: mysql:8.0
+        port:
+        - containerPort: 3306
+        env:
+        - name: DB_ROOT_PASSWORD
+	  valueFrom:
+	    secretKeyRef:
+	      name: springDB-secret
+	      key: root-password
+	- name: DB_DATABASE
+	  value: "spring"
+	- name: DB_USER
+	  valueFrom:
+	    secretKeyRef:
+	      name: springDB-secret
+	      key: username
+	- name: DB_PASSWORD
+	  valueFrom:
+	    secretKeyRef:
+	      name: springDB-secret
+	      key: password
+	volumeMounts:
+	- name: mysql-persistent-storage
+	  mountPath: /var/lib/mysql
+  volumes:
+  - name: mysql-persistent-storage
+    persistentVolumeClaim:
+	claimName: mysql-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springDB
+  labels:
+    app: springDB
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    app: springDB
+  clusterIP: None
