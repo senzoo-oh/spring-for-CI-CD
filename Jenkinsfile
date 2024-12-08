@@ -41,7 +41,20 @@ pipeline {
         branch 'main'
       }
       steps {
-	step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: '*.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+	script {
+	  withCredentials([file(credentialsId: "${CREDENTIALS_ID}", variable: 'GKE_KEY')]) {
+	    sh 'gcloud auth active-service-account --key-file=$GKE_KEY
+	    sh 'gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${LOCATION} --project ${PROJECT_ID}'
+	    sh 'kubectl apply -f mysql-pv.yaml'
+	    sh 'kubectl apply -f mysql-pvc.yaml'
+
+	    sh 'kubectl apply -f springDB-secret.yaml'
+
+	    sh 'kubectl apply -f springDBDeployment.yaml'
+
+	    sh 'kubectl apply -f webServerDeployment.yaml'
+	  }
+	}
       }
     }
   }
