@@ -1,4 +1,4 @@
-// 클러스터 배포 테스트 7
+// feature 브랜치에 push했을 경우, webHook 확인
 
 var createError = require('http-errors');
 var express = require('express');
