@@ -43,7 +43,7 @@ pipeline {
       steps {
 	script {
 	  withCredentials([file(credentialsId: "${CREDENTIALS_ID}", variable: 'GKE_KEY')]) {
-	    sh 'gcloud auth active-service-account --key-file=$GKE_KEY
+	    sh 'gcloud auth active-service-account --key-file=$GKE_KEY'
 	    sh 'gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${LOCATION} --project ${PROJECT_ID}'
 	    sh 'kubectl apply -f mysql-pv.yaml'
 	    sh 'kubectl apply -f mysql-pvc.yaml'
