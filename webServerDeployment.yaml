@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring
+  labels:
+    app: spring
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: spring
+
+  template:
+    metadata:
+      labels:
+        app: spring
+        tier: spring
+
+    spec:
+      containers:
+        - name: spring
+          image: senzoo/spring:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              name: spring
+	  env:
+	    - name: DB_HOST
+	      value: "springDB"
+	    - name: DB_USER
+	      valueFrom:
+		secretKeyRef:
+		  name: springDB-secret
+		  key: username
+	    - name: DB_PASSWORD
+	      valueFrom:
+		secretKeyRef:
+		  name: springDB-secret
+		  key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring
+  labels:
+    app: spring
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+  selector:
+    app: spring
+    tier: spring
+  type: LoadBalancer
