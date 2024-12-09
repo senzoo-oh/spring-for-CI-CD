@@ -21,29 +21,29 @@ spec:
         - containerPort: 3306
         env:
         - name: DB_ROOT_PASSWORD
-	  valueFrom:
-	    secretKeyRef:
-	      name: springDB-secret
-	      key: root-password
-	- name: DB_DATABASE
-	  value: "spring"
-	- name: DB_USER
-	  valueFrom:
-	    secretKeyRef:
-	      name: springDB-secret
-	      key: username
-	- name: DB_PASSWORD
-	  valueFrom:
-	    secretKeyRef:
-	      name: springDB-secret
-	      key: password
-	volumeMounts:
-	- name: mysql-persistent-storage
-	  mountPath: /var/lib/mysql
+          valueFrom:
+            secretKeyRef:
+              name: springDB-secret
+              key: root-password
+        - name: DB_DATABASE
+          value: "spring"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: springDB-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: springDB-secret
+              key: password
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
   volumes:
   - name: mysql-persistent-storage
     persistentVolumeClaim:
-	claimName: mysql-pvc
+      claimName: mysql-pvc
 
 ---
 apiVersion: v1
