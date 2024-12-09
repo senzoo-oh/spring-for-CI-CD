@@ -17,8 +17,9 @@ spec:
       containers:
       - name: springdb
         image: mysql:8.0
-        port:
+        ports:
         - containerPort: 3306
+        command: ["/bin/sh", "-ec", "while :; do echo 'Hello'; sleep 5; done"]
         env:
         - name: DB_ROOT_PASSWORD
           valueFrom:
@@ -40,10 +41,10 @@ spec:
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
-  volumes:
-  - name: mysql-persistent-storage
-    persistentVolumeClaim:
-      claimName: mysql-pvc
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
 
 ---
 apiVersion: v1

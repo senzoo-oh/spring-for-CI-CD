@@ -58,10 +58,10 @@ pipeline {
       }
       steps {
         sh "sed -i 's/spring:latest/spring:${env.BUILD_ID}/g' webServerDeployment.yaml"
-        step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'webServerDeployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
-        step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'springDBDeployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
         step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'mysql-pv.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
         step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'mysql-pvc.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+        step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'webServerDeployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+        step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'springDBDeployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
       }
     }
   }
