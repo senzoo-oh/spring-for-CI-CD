@@ -32,12 +32,12 @@ spec:
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: springDB-secret
+                  name: springdb-secret
                   key: username
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: springDB-secret
+                  name: springdb-secret
                   key: password
 ---
 apiVersion: v1

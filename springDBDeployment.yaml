@@ -23,19 +23,19 @@ spec:
         - name: DB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: springDB-secret
+              name: springdb-secret
               key: root-password
         - name: DB_DATABASE
           value: "spring"
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: springDB-secret
+              name: springdb-secret
               key: username
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: springDB-secret
+              name: springdb-secret
               key: password
         volumeMounts:
         - name: mysql-persistent-storage
