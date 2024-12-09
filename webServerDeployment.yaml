@@ -28,7 +28,7 @@ spec:
               name: spring
           env:
             - name: DB_HOST
-              value: "springDB"
+              value: "springdb"
             - name: DB_USER
               valueFrom:
                 secretKeyRef:

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springDB
+  name: springdb
   labels:
-    app: springDB
+    app: springdb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: springDB
+      app: springdb
   template:
     metadata:
       labels:
-        app: springDB
+        app: springdb
     spec:
       containers:
-      - name: springDB
+      - name: springdb
         image: mysql:8.0
         port:
         - containerPort: 3306
@@ -49,13 +49,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: springDB
+  name: springdb
   labels:
-    app: springDB
+    app: springdb
 spec:
   ports:
   - port: 3306
     targetPort: 3306
   selector:
-    app: springDB
+    app: springdb
   clusterIP: None
