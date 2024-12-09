@@ -26,19 +26,19 @@ spec:
           ports:
             - containerPort: 3000
               name: spring
-	  env:
-	    - name: DB_HOST
-	      value: "springDB"
-	    - name: DB_USER
-	      valueFrom:
-		secretKeyRef:
-		  name: springDB-secret
-		  key: username
-	    - name: DB_PASSWORD
-	      valueFrom:
-		secretKeyRef:
-		  name: springDB-secret
-		  key: password
+          env:
+            - name: DB_HOST
+              value: "springDB"
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: springDB-secret
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: springDB-secret
+                  key: password
 ---
 apiVersion: v1
 kind: Service
