@@ -5,6 +5,9 @@ pipeline {
     CLUSTER_NAME = 'k8s'
     LOCATION = 'asia-northeast3-a'
     CREDENTIALS_ID = 'gke'
+    DB_USER = credentials('username')
+    DB_PASSWORD = credentials('password')
+    DB_ROOT_PASSWORD = credentials('root-password')
   }
   stages {
     stage("git clone") {
@@ -36,6 +39,19 @@ pipeline {
         }
       }
     }
+    stage("Deploy Secrets") {
+        steps {
+            script {
+                sh """
+                kubectl create secret generic springdb-secret \
+                  --from-literal=username=${DB_USER} \
+                  --from-literal=password=${DB_PASSWORD} \
+                  --from-literal=root-password=${DB_ROOT_PASSWORD} \
+                  --dry-run=client -o yaml | kubectl apply -f -
+                """
+            }
+        }
+    }	
     stage("Deploy to GKE") {
       when {
         branch 'main'
